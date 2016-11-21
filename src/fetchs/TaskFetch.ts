@@ -7,7 +7,7 @@ import {
   ExecutorOrCreator,
   TaskId,
   SubtaskId,
-  IdOfMember,
+  UserId,
   TasklistId,
   StageId,
   TagId,
@@ -36,8 +36,8 @@ export interface CreateTaskOptions {
   content: string
   _tasklistId: TasklistId
   _stageId?: StageId
-  _executorId?: IdOfMember
-  involveMembers?: IdOfMember[]
+  _executorId?: UserId
+  involveMembers?: UserId[]
   dueDate?: string
   priority?: Priority
   recurrence?: string
@@ -46,8 +46,8 @@ export interface CreateTaskOptions {
 
 export interface CreateFreeTaskOptions {
   content: string
-  _executorId?: IdOfMember
-  involveMembers?: IdOfMember[]
+  _executorId?: UserId
+  involveMembers?: UserId[]
   dueDate?: string
   priority?: '0' | '1' | '2'
   recurrence?: string
@@ -60,12 +60,12 @@ export interface GetOrgsTasksCreatedOptions {
 }
 
 export interface UpdateTaskOptions {
-  _executorId?: IdOfMember
+  _executorId?: UserId
   _projectId?: ProjectId
   _tasklistId?: TasklistId
   tagsId?: TagId[]
   _stageId?: StageId
-  involveMembers?: IdOfMember[]
+  involveMembers?: UserId[]
   isDone?: boolean
   priority?: Priority
   dueDate?: string
@@ -84,8 +84,8 @@ export interface ForkTaskOptions {
 export interface ImportTaskOptions {
   _stageId?: StageId
   tasks: TaskData[]
-  involveMembers?: IdOfMember[]
-  _executorId?: IdOfMember
+  involveMembers?: UserId[]
+  _executorId?: UserId
   dueDate?: string
   visiable?: visibility
 }
@@ -97,7 +97,7 @@ export interface MoveTaskOptions {
 
 export interface GetStageTasksOptions {
   isDone?: boolean
-  _executorId?: IdOfMember
+  _executorId?: UserId
   dueDate?: string
   accomplished?: string
   all?: boolean
@@ -161,16 +161,16 @@ export interface UpdateDueDateResponse {
 }
 
 export interface UpdateExecutorResponse {
-  _executorId: IdOfMember
+  _executorId: UserId
   _id: TaskId
   executor: ExecutorOrCreator
-  involveMembers?: IdOfMember[]
+  involveMembers?: UserId[]
   updated: string
 }
 
 export interface UpdateInvolveMembersResponse {
   _id: TaskId
-  involveMembers: IdOfMember[]
+  involveMembers: UserId[]
   updated: string
 }
 
@@ -260,7 +260,7 @@ export class TaskFetch extends Fetch {
     })
   }
 
-  batchUpdateExecutor(stageId: StageId, _executorId: IdOfMember): Observable<BatchUpdateExecutorResponse> {
+  batchUpdateExecutor(stageId: StageId, _executorId: UserId): Observable<BatchUpdateExecutorResponse> {
     return this.fetch.put(`stages/${stageId}/tasks/executor`)
   }
 
@@ -284,7 +284,7 @@ export class TaskFetch extends Fetch {
 
   getByTasklist(_tasklistId: TasklistId, options: {
     isDone?: boolean
-    _executorId?: IdOfMember
+    _executorId?: UserId
     dueDate?: string
     accomplished?: string
     all?: boolean
@@ -330,7 +330,7 @@ export class TaskFetch extends Fetch {
     })
   }
 
-  updateExecutor(_taskId: TaskId, _executorId: IdOfMember): Observable<UpdateExecutorResponse> {
+  updateExecutor(_taskId: TaskId, _executorId: UserId): Observable<UpdateExecutorResponse> {
     return this.fetch.put(`tasks/${_taskId}/_executorId`, {
       _executorId: _executorId
     })
@@ -338,7 +338,7 @@ export class TaskFetch extends Fetch {
 
   updateInvolvemembers(
     _taskId: TaskId,
-    memberIds: IdOfMember[],
+    memberIds: UserId[],
     type: 'involveMembers' | 'addInvolvers' | 'delInvolvers'
   ): Observable<UpdateInvolveMembersResponse> {
     const putData: any = Object.create(null)
