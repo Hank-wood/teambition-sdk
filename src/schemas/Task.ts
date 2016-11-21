@@ -57,6 +57,7 @@ export interface TaskData extends ISchema {
     _id: TasklistId
   }
   isFavorite?: boolean
+  isInbox?: boolean
 }
 
 @schemaName('Task')

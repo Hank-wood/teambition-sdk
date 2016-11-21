@@ -44,6 +44,16 @@ export interface CreateTaskOptions {
   tagIds?: TagId[]
 }
 
+export interface CreateFreeTaskOptions {
+  content: string
+  _executorId?: IdOfMember
+  involveMembers?: IdOfMember[]
+  dueDate?: string
+  priority?: '0' | '1' | '2'
+  recurrence?: string
+  tagIds?: TagId[]
+}
+
 export interface GetOrgsTasksCreatedOptions {
   page: number
   maxId: number
@@ -198,6 +208,10 @@ export class TaskFetch extends Fetch {
 
   create(createTaskData: CreateTaskOptions): Observable<TaskData> {
     return this.fetch.post(`tasks`, createTaskData)
+  }
+
+  createFree(data: CreateFreeTaskOptions): Observable<TaskData> {
+    return this.fetch.post('tasks/inbox', data)
   }
 
   get(_taskId: TaskId): Observable<TaskData>
